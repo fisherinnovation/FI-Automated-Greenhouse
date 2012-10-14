@@ -38,11 +38,9 @@ int WIFI_LOG_INTERVAL = 0;
 
 /* System Configuration */
 // Temperature Configuration
-const int MIN_GREENHOUSE_TEMP = 20; // Minmum greenhouse temperature. Anything lower then this value will result in a alarm.
 const int MAX_GREENHOUSE_TEMP = 26; // Maximum greenhouse temperature.
 
 // Humidity Configuration
-const int MIN_GREENHOUSE_HUMIDITY = 50; // Minimum greenhouse humidity (as percentage)
 const int MAX_GREENHOUSE_HUMIDITY = 70; // Maximum greenhouse humidity (as percentage)
 
 // Lighting Configuration
@@ -117,25 +115,14 @@ void mainLoop() {
   // result in a 2 second delay during the call.
   getDHT22Data();
   
-  // Check if the system temperature is lower then configured.
-  if(CURRENT_TEMP < MIN_GREENHOUSE_TEMP) {
-    // Temperature is too low. 
-    // Make sure fans are off.
-    turnFanOff();
-  }
   // Check if the system temperature is higher then configured. 
-  else if(CURRENT_TEMP > MAX_GREENHOUSE_TEMP) {
+  if(CURRENT_TEMP > MAX_GREENHOUSE_TEMP) {
     // Temperature is too high.
     // Make sure fans are on.
     turnFanOn();
   } else {
     // Temperature is at a stable reading.
-    // Check if the system humidity is lower then configured.
-    if(CURRENT_HUMIDITY < MIN_GREENHOUSE_HUMIDITY) {
-      turnFanOff(); // Humidity is too low. Make sure fans are off.
-    }
-    // Check if the system humidity is higher then configured.  
-    else if(CURRENT_HUMIDITY > MAX_GREENHOUSE_HUMIDITY) {
+    if(CURRENT_HUMIDITY > MAX_GREENHOUSE_HUMIDITY) {
       turnFanOn(); // Humidity is too high. Make sure fans are on.
     } else {
       turnFanOff(); // Humidity is at a stable reading. Make sure fans are off.
