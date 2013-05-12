@@ -1,0 +1,17 @@
+{
+  "name": "FI-Automated-Greenhouse",
+  "version": "0.0.1",
+  "description": "The Fisher Innovation Automated Greenhouse Controller",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fisherinnovation/FI-Automated-Greenhouse.git"
+  },
+  "author": "Matt Fisher",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "3cadc00eade0e968df784fc61e5e9b1a97d76552"
+}
