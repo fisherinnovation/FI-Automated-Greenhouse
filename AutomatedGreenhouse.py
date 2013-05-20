@@ -13,6 +13,7 @@
 
 import time
 import sys
+import os
 #import RPi.GPIO as io 
 #io.setmode(io.BCM)
 sys.path.append('conf')
@@ -24,6 +25,7 @@ import TemperatureController
 import WaterController
 sys.path.append('lib/db')
 import MySQL
+import re
 
 class AutomatedGreenhouse():
   CONFIGURATION = False
@@ -36,13 +38,22 @@ class AutomatedGreenhouse():
   def __init__(self):
     ''' Application Setup '''
 
+    # Clear screen on application instantiation.
+    if os.name == 'nt':
+      os.system('cls')    # Windows
+    else:
+      os.system('clear')  # Linux / OSX
+
     print("--------------------------------------------------------")
     print("Fisher Innovation - Automated Greenhouse Controller")
     print("Created By: Matt Fisher <fisher.matt@gmail.com>")
     print("https://github.com/fisherinnovation/FI-Automated-Greenhouse")
     print("--------------------------------------------------------")
     print("")
-    print("> NOTICE: Activating system...")
+    #print("> NOTICE: Activating system...")
+
+    #inpput = raw_input(">")
+    #print inpput
     
     self.CONFIGURATION = Configuration.Configuration()
     self.DATABASE = MySQL.MySQL(self.CONFIGURATION)
@@ -50,8 +61,8 @@ class AutomatedGreenhouse():
     # Init controllers
     self.LIGHTCONTROLLER = LightController.LightController(self.CONFIGURATION)
     self.FANCONTROLLER = FanController.FanController(self.CONFIGURATION)
-    self.TEMPERATURECONTROLLER = TemperatureController.TemperatureController(self.CONFIGURATION)
     self.WATERCONTROLLER = WaterController.WaterController(self.CONFIGURATION)
+    self.TEMPERATURECONTROLLER = TemperatureController.TemperatureController(self.CONFIGURATION)
     
     print("> NOTICE: System Startup Complete.")
     print("> NOTICE: Greenhouse Startup Complete!")
@@ -68,6 +79,9 @@ class AutomatedGreenhouse():
     # Read Internal Greenhouse Temperature and Humidity
     self.TEMPERATURECONTROLLER.readGreenhouseTemperature()
     self.TEMPERATURECONTROLLER.readWaterTemperature()
+
+    # Water Temperature Checks
+    self.TEMPERATURECONTROLLER.regulateWaterTemperature()
 
     '''
     # Check if the system temperature is higher then configured. 

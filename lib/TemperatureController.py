@@ -69,7 +69,6 @@ class TemperatureController(object):
 
 	def readWaterTemperature(self):
 		''' Reads the water temperature. '''
-
 		print("> NOTICE: Reading the water temperature...")
 
 		lines = read_temp_raw()
@@ -91,3 +90,37 @@ class TemperatureController(object):
 	        	CURRENT_WATER_TEMPERATURE = temp_f
 
 	        #return temp_c, temp_f
+
+
+	def regulateGreenhouseTemperature(self):
+		''' Run system and temperature checks on the greenhouse enviroment. '''
+		print("> NOTICE: Regulating greenhouse temperature.")
+
+		# Check for an active and regulated water flow.
+
+		if(self.CURRENT_GREENHOUSE_TEMPERATURE > self.CONFIGURATION.MAX_GREENHOUSE_TEMP):
+			self.deactivacteWaterHeater()
+		elif(self.CURRENT_GREENHOUSE_TEMPERATURE < self.CONFIGURATION.MIN_GREENHOUSE_TEMP):
+			self.activacteWaterHeater()
+
+
+	def regulateWaterTemperature(self):
+		''' Run system and temperature checks on the water heating system. '''
+		print("> NOTICE: Regulating water heating system.")
+
+		# Check for an active and regulated water flow.
+
+		if(self.CURRENT_WATER_TEMPERATURE > self.CONFIGURATION.MAX_WATER_TEMPERATURE):
+			self.deactivacteWaterHeater()
+		elif(self.CURRENT_WATER_TEMPERATURE < self.CONFIGURATION.MIN_WATER_TEMPERATURE):
+			self.activacteWaterHeater()
+
+
+	def activacteWaterHeater(self):
+		''' Turns the water heating system on. '''
+		print("> NOTICE: Activating water heating system...")
+
+
+	def deactivacteWaterHeater(self):
+		''' Turns the water heating system off. '''
+		print("> NOTICE: Deactivating water heating system...")

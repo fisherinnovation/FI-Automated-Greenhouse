@@ -18,7 +18,6 @@ import time
 class WaterController(object):
 	CONFIGURATION = False
 
-	CURRENT_WATER_TEMPERATURE = 0
 	TOTAL_WATER_VOLUME_PUMPED = 0
 	CURRENT_WATER_FLOW_RATE = 0
 
@@ -43,6 +42,23 @@ class WaterController(object):
 		Liters = Q * time elapsed (seconds) / 60 (seconds/minute)
 		Liters = (Frequency (Pulses/second) / 7.5) * time elapsed (seconds) / 60
 		Liters = Pulses / (7.5 * 60)
-		'''
 
+		// Arduino Example
+		sei();            //Enable interrupts
+		delay (15);
+		cli();            //Disable interrupts
+		if ((pulsesCounter == previousMeasure) && (pulsesCounter != 0)) {
+			counter += 1;
+		}
+ 
+		previousMeasure = pulsesCounter;
+ 
+		if ((counter == 50) && (pulsesCounter != 0)) { // Send pulses number to Raspberry Pi
+			Serial.print("pulses:");
+			Serial.println (pulsesCounter, DEC); //Prints the pulses number
+			pulsesCounter = 0;
+			previousMeasure = 0;
+			counter = 0;
+		}
+		'''
 		print("> NOTICE: Reading the water pump flow sensor.")
