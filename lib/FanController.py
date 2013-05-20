@@ -23,27 +23,34 @@
 # to the two remaining pin outs from the fans.
 ##
 
-import RPi.GPIO as io
-io.setmode(io.BCM) 
+#import RPi.GPIO as io
+#io.setmode(io.BCM) 
 
 class FanController(object):
-    FanControlPin = 4;  # Setup Fan Control MOSFET on pin D4
-    FANS_ON = false;    # Used to monitor the status of the fans    
+    FANS_ON = False         # Used to monitor the status of the fans    
+    CONFIGURATION = False   #
+    
 
-    ##
-    # Initialize LightController.
-    ##
-    def __init__(self):
+    def __init__(self, conf):
+        ''' Initialize LightController. '''
+
         print("> NOTICE: Activating Fan Control System...")
-        io.setup(FanControlPin, io.OUT)
-        io.output(FanControlPin, False)
+
+        CONFIGURATION = conf
+
+        #io.setup(CONFIGURATION.FAN_CONTROL_PIN, io.OUT)
+        #io.output(CONFIGURATION.FAN_CONTROL_PIN, False)
+
         print("> NOTICE: Fan Control System Active!")
 
-    ## Turn the fans on.
+
     def turnFanOn(self):
-        if(FANS_ON == true) return
+        ''' Turn the fans on. '''
+
+        if(FANS_ON == True): 
+            return
       
-        FANS_ON = true
+        FANS_ON = True
       
         print("> NOTICE: Fans Active! ")
         print(" Temp: ")
@@ -53,11 +60,13 @@ class FanController(object):
       
         io.output(FanControlPin, True)
     
-    ## Turn the fans on.
+
     def turnFanOff(self):
-        if(FANS_ON == false) return
+        ''' Turn the fans on. '''
+
+        if(FANS_ON == False): return
       
-        FANS_ON = false
+        FANS_ON = False
       
         print("> NOTICE: Fans Deactive!")
         print(" Temp: ")
@@ -67,6 +76,8 @@ class FanController(object):
       
         io.output(FanControlPin, False)
     
-    ## Returns the current state of the fan system.
+
     def getFansActiveState(self):
-      return FANS_ON
+        ''' Returns the current state of the fan system. '''
+
+        return FANS_ON

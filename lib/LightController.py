@@ -11,51 +11,69 @@
 # https:#github.com/fisherinnovation/FI-Automated-Greenhouse
 ##
 
+import sys
 import time
-import RPi.GPIO as io
-io.setmode(io.BCM)
+sys.path.append('conf')
+import Configuration
+#import RPi.GPIO as io
+#io.setmode(io.BCM)
 
 class LightController(object):
-	LightRelayPin = 8	# Lighting on pin D8.
-	LIGHTS_ON = false	# Status of the lights.
+	LIGHTS_ON = False		# Status of the lights.
+	CONFIGURATION = False 	# Reference to the global configuration.
 
-	## Setup the Relay Controller.
-	def __init__(self):
-		print("> NOTICE: Activating 120VAC Lighting Relay System...")
-	  
-	  	io.setup(LightRelayPin, io.OUT)
-		io.output(LightRelayPin, False)
-	  	print("> NOTICE: Lighting System Active.")
 	
-	## Tests the light relays.
+	def __init__(self, conf):
+		''' Setup the Relay Controller. '''
+
+		print("> NOTICE: Activating Light Controller...")
+	  	
+	  	self.CONFIGURATION = conf
+
+	  	#io.setup(self.CONFIGURATION.LIGHT_RELAY_PIN, io.OUT)
+		#io.output(self.CONFIGURATION.MAX_GREENHOUSE_TEMP, False)
+	  	
+	  	print("> NOTICE: Lighting Controller Active!")
+	
+
 	def testLights(self):
+		''' Tests the light relays. '''
+
 		print("> NOTICE: Testing Relay #1..")  
-		io.output(LightRelayPin, True)
+		#io.output(self.CONFIGURATION.LIGHT_RELAY_PIN, True)
 		time.sleep(5);
-		io.output(LightRelayPin, False)
+		#io.output(self.CONFIGURATION.LIGHT_RELAY_PIN, False)
 		print("> NOTICE: Relay #1 Test Complete!")
 		time.sleep(5);
 	
-	## Turns the lights on.
+
 	def turnLightsOn(self):
-		if(LIGHTS_ON == true):
+		''' Turns the lights on. '''
+
+		if(self.LIGHTS_ON == True):
 			return
 
-		LIGHTS_ON = true
+		self.LIGHTS_ON = True
+		
 		print("> NOTICE: Activating Lights")
-		displayLCDMessage("Lighting System", "Activating", true, 1)
-		io.output(LightRelayPin, True)
+		
+		io.output(self.CONFIGURATION.LIGHT_RELAY_PIN, True)
 	
-	## Turns the lights off.
+
 	def turnLightsOff(self):
-		if(LIGHTS_ON == false):
+		''' Turns the lights off. '''
+
+		if(self.LIGHTS_ON == False):
 			return
 
-		LIGHTS_ON = false
+		self.LIGHTS_ON = False
+		
 		print("> NOTICE: Deactivating Lights")
-		displayLCDMessage("Lighting System", "Deactivaing", true, 1)
-		io.output(LightRelayPin, False)
+		
+		io.output(self.CONFIGURATION.LIGHT_RELAY_PIN, False)
 
-	## Returns the current active state of the lighting system.
+
 	def getLightsActiveState(self):
-		return LIGHTS_ON
+		''' Returns the current active state of the lighting system. '''
+
+		return self.LIGHTS_ON
